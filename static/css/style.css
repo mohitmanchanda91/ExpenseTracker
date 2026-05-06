@@ -478,6 +478,113 @@ a { color: inherit; text-decoration: none; }
 .auth-switch a:hover { text-decoration: underline; }
 
 /* ------------------------------------------------------------------ */
+/* Legal pages (Terms, Privacy)                                        */
+/* ------------------------------------------------------------------ */
+
+.legal {
+    padding: 4rem 2rem 5rem;
+}
+
+.legal-inner {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.legal-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.legal-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    margin-bottom: 1.25rem;
+}
+
+.legal-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+}
+
+.legal-title em {
+    font-style: italic;
+    color: var(--accent);
+}
+
+.legal-meta {
+    font-size: 0.85rem;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.legal-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 2.5rem;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.04);
+}
+
+.legal-lede {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+}
+
+.legal-h2 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--ink);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-soft);
+}
+
+.legal-card > .legal-h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.legal-card p {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+}
+
+.legal-footnote {
+    margin-top: 2rem;
+    font-size: 0.875rem;
+    color: var(--ink-muted) !important;
+    font-style: italic;
+}
+
+.legal-back {
+    text-align: center;
+    margin-top: 2.5rem;
+}
+
+@media (max-width: 600px) {
+    .legal { padding: 2.5rem 1rem 3rem; }
+    .legal-card { padding: 1.5rem; }
+}
+
+/* ------------------------------------------------------------------ */
 /* Footer                                                              */
 /* ------------------------------------------------------------------ */
 
