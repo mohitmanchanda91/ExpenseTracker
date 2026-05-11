@@ -114,24 +114,48 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    user_id = session.get("user_id")
-    if user_id is None:
+    if session.get("user_id") is None:
         return redirect(url_for("login"))
 
-    conn = get_db()
-    try:
-        user = conn.execute(
-            "SELECT id, name, email, created_at FROM users WHERE id = ?",
-            (user_id,),
-        ).fetchone()
-    finally:
-        conn.close()
+    user = {
+        "name": "Demo User",
+        "email": "demo@spendly.com",
+        "initials": "DU",
+        "member_since": "May 2026",
+    }
 
-    if user is None:
-        session.pop("user_id", None)
-        return redirect(url_for("login"))
+    stats = {
+        "total_spent": "₹4,820.45",
+        "transaction_count": 28,
+        "top_category": "Food",
+    }
 
-    return render_template("profile.html", user=user)
+    transactions = [
+        {"date": "May 11", "description": "Team lunch", "category": "Food", "amount": "₹22.75"},
+        {"date": "May 10", "description": "Birthday gift", "category": "Other", "amount": "₹25.00"},
+        {"date": "May 09", "description": "Running shoes", "category": "Shopping", "amount": "₹64.20"},
+        {"date": "May 08", "description": "Movie ticket", "category": "Entertainment", "amount": "₹18.00"},
+        {"date": "May 07", "description": "Pharmacy", "category": "Health", "amount": "₹30.00"},
+        {"date": "May 06", "description": "Internet bill", "category": "Bills", "amount": "₹89.99"},
+        {"date": "May 05", "description": "Metro pass", "category": "Transport", "amount": "₹45.00"},
+        {"date": "May 04", "description": "Coffee and pastry", "category": "Food", "amount": "₹12.50"},
+    ]
+
+    categories = [
+        {"name": "Food", "slug": "food", "total": "₹1,420.30", "percent": 32},
+        {"name": "Shopping", "slug": "shopping", "total": "₹1,080.50", "percent": 24},
+        {"name": "Bills", "slug": "bills", "total": "₹890.00", "percent": 20},
+        {"name": "Transport", "slug": "transport", "total": "₹620.00", "percent": 14},
+        {"name": "Entertainment", "slug": "entertainment", "total": "₹450.00", "percent": 10},
+    ]
+
+    return render_template(
+        "profile.html",
+        user=user,
+        stats=stats,
+        transactions=transactions,
+        categories=categories,
+    )
 
 
 @app.route("/terms")
