@@ -20,11 +20,16 @@ with app.app_context():
 
 @app.route("/")
 def landing():
+    if session.get("user_id") is not None:
+        return redirect(url_for("profile"))
     return render_template("landing.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if session.get("user_id") is not None:
+        return redirect(url_for("profile"))
+
     if request.method == "GET":
         return render_template("register.html")
 
@@ -75,6 +80,9 @@ def _validate_registration(name, email, password):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if session.get("user_id") is not None:
+        return redirect(url_for("profile"))
+
     if request.method == "GET":
         return render_template("login.html")
 
