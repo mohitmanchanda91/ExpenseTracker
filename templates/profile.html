@@ -4,22 +4,80 @@
 
 {% block content %}
 
-<section class="auth-section">
-    <div class="auth-container">
+<section class="profile-page">
 
-        <div class="auth-header">
-            <h1 class="auth-title">{{ user.name }}</h1>
-            <p class="auth-subtitle">{{ user.email }}</p>
+    <header class="profile-header">
+        <div class="profile-avatar" aria-hidden="true">{{ user.initials }}</div>
+        <div class="profile-identity">
+            <h1 class="profile-name">{{ user.name }}</h1>
+            <p class="profile-email">{{ user.email }}</p>
+            <span class="profile-member-since">Member since {{ user.member_since }}</span>
         </div>
+    </header>
 
-        <div class="auth-card profile-card">
-            <p class="profile-meta">Member since {{ user.created_at[:10] }}</p>
-            <div class="profile-empty">
-                Your expenses will appear here in a future step.
+    <div class="profile-stats">
+        <div class="stat-card">
+            <span class="stat-label">Total spent</span>
+            <span class="stat-value">{{ stats.total_spent }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Transactions</span>
+            <span class="stat-value">{{ stats.transaction_count }}</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Top category</span>
+            <span class="stat-value">{{ stats.top_category }}</span>
+        </div>
+    </div>
+
+    <div class="profile-grid">
+
+        <section class="profile-panel profile-transactions">
+            <div class="panel-header">
+                <h2 class="panel-title">Recent transactions</h2>
+                <a class="panel-link" href="#">View all</a>
             </div>
-        </div>
+            <table class="txn-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th class="txn-amount-col">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in transactions %}
+                    <tr>
+                        <td class="txn-date">{{ t.date }}</td>
+                        <td class="txn-desc">{{ t.description }}</td>
+                        <td><span class="cat-badge cat-{{ t.category|lower }}">{{ t.category }}</span></td>
+                        <td class="txn-amount">{{ t.amount }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section class="profile-panel profile-categories">
+            <div class="panel-header">
+                <h2 class="panel-title">By category</h2>
+            </div>
+            <div class="cat-list">
+                {% for c in categories %}
+                <div class="cat-row">
+                    <span class="cat-name">{{ c.name }}</span>
+                    <div class="cat-track">
+                        <div class="cat-bar cat-bar-{{ c.slug }}" style="width: {{ c.percent }}%"></div>
+                    </div>
+                    <span class="cat-amount">{{ c.total }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
 
     </div>
+
 </section>
 
 {% endblock %}
