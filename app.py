@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from datetime import datetime
 
 from flask import Flask, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -125,11 +126,24 @@ def profile():
     if session.get("user_id") is None:
         return redirect(url_for("login"))
 
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT name, email, created_at FROM users WHERE id = ?",
+            (session["user_id"],),
+        ).fetchone()
+    finally:
+        conn.close()
+
+    if row is None:
+        session.pop("user_id", None)
+        return redirect(url_for("login"))
+
     user = {
-        "name": "Demo User",
-        "email": "demo@spendly.com",
-        "initials": "DU",
-        "member_since": "May 2026",
+        "name": row["name"],
+        "email": row["email"],
+        "initials": _initials(row["name"]),
+        "member_since": _format_member_since(row["created_at"]),
     }
 
     stats = {
@@ -164,6 +178,24 @@ def profile():
         transactions=transactions,
         categories=categories,
     )
+
+
+def _initials(name):
+    parts = [p for p in name.split() if p]
+    if not parts:
+        return "?"
+    if len(parts) == 1:
+        return parts[0][:2].upper()
+    return (parts[0][0] + parts[-1][0]).upper()
+
+
+def _format_member_since(created_at):
+    if not created_at:
+        return ""
+    try:
+        return datetime.strptime(created_at[:19], "%Y-%m-%d %H:%M:%S").strftime("%B %Y")
+    except ValueError:
+        return created_at
 
 
 @app.route("/terms")
